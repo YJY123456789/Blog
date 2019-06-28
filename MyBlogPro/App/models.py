@@ -1,3 +1,5 @@
+import random
+
 from App.exts import db
 
 
@@ -20,6 +22,7 @@ class Article(db.Model):
     name = db.Column(db.String(200))
     content = db.Column(db.String(255))
     my_sort = db.Column(db.Integer,db.ForeignKey(Sort.id))
+    pic = db.Column(db.Integer,default=random.randint(1,12))
 
 
 class User(db.Model):

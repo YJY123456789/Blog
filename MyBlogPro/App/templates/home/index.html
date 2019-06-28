@@ -104,7 +104,7 @@
   <main class="r_box">
       {% if data.get('data')  %}
           {% for article in data.get('data').ars %}
-                  <li><i><a href="/"><img src="{{ url_for('static',filename='home/images/1.jpg') }}"></a></i>
+                  <li><i><a href="/"><img src="{{ url_for('static',filename='home/images/%d.jpg'%(article.pic)) }}"></a></i>
                     <h3><a href="/">{{ article.name }}</a></h3>
                     <p>{{ article.content | striptags }}</p>
                   </li>
@@ -112,7 +112,7 @@
 
       {% else %}
           {% for a in data.get('article') %}
-          <li><i><a href="/"><img src="{{ url_for('static',filename='home/images/1.jpg') }}"></a></i>
+          <li><i><a href="/"><img src="{{ url_for('static',filename='home/images/%d.jpg'%(a.pic)) }}"></a></i>
             <h3><a href="/">{{ a.name | striptags}}</a></h3>
             <p>{{ a.content | striptags}}</p>
             </li>

@@ -312,8 +312,8 @@ def register():
         user=User.query.all()
         for x in user:
             if username == x.name:
+                return render_template('admin/register.html',data='用户名已存在')
                 break
-                return "账户已存在"
             else:
                 continue
         else:
@@ -329,6 +329,6 @@ def register():
                     db.session.flush()
                 return render_template('admin/login.html')
             else:
-                return '密码错误'
+                return render_template('admin/register.html',date='密码错误')
     return render_template('admin/register.html')
 
