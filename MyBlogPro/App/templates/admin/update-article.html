@@ -102,11 +102,11 @@
             <h1 class="page-header">文章修改</h1>
             <div class="form-group">
               <label for="article-title" class="sr-only">标题</label>
-              <input type="text" id="article-title" name="title" class="form-control" placeholder="在此处输入标题" value='{{ data.name }}' required autofocus autocomplete="off">
+              <input type="text" id="article-title" name="title" class="form-control" placeholder="在此处输入标题" value='{{ data.get('data').name | striptags}}' required autofocus autocomplete="off">
             </div>
             <div class="form-group">
               <label for="article-content" class="sr-only">内容</label>
-              <script id="article-content" name="content" type="text/plain">{{ data.content }}</script>
+              <script id="article-content" name="content" type="text/plain">{{ data.get('data').content | striptags}}</script>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>关键字</span></h2>
@@ -126,41 +126,56 @@
           <div class="col-md-3">
             <h1 class="page-header">操作</h1>
             <div class="add-article-box">
-              <h2 class="add-article-box-title"><span>栏目</span></h2>
+              <h2 class="add-article-box-title"><span>文章分类</span></h2>
               <div class="add-article-box-content">
                 <ul class="category-list">
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="1">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="2">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="3" checked>
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="4">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="5">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>
-                  </li>
+                      {% for s in data.get('sort') %}
+                          {% if s.id == data.get('data').my_sort %}
+                           <li>
+                              <label>
+                                <input name="category" type="radio" value={{ data.get('data').id }} checked>
+                                {{ s.name }} <em class="hidden-md">( 分类ID: <span>{{ s.id }}</span> )</em></label>
+                           </li>
+                          {% else %}
+                            <li>
+                              <label>
+                              <input name="category" type="radio" value={{ data.get('data').id }}>
+                      {{ s.name }} <em class="hidden-md">( 分类ID: <span>{{ s.id }}</span> )</em></label>
+                            </li>
+                          {% endif %}
+                      {% endfor %}
+{#                  <li>#}
+{#                    <label>#}
+{#                      <input name="category" type="radio" value="1">#}
+{#                      这是栏目 <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>#}
+{#                  </li>#}
+{#                  <li>#}
+{#                    <label>#}
+{#                      <input name="category" type="radio" value="2">#}
+{#                      这是栏目 <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>#}
+{#                  </li>#}
+{#                  <li>#}
+{#                    <label>#}
+{#                      <input name="category" type="radio" value="3" checked>#}
+{#                      这是栏目 <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>#}
+{#                  </li>#}
+{#                  <li>#}
+{#                    <label>#}
+{#                      <input name="category" type="radio" value="4">#}
+{#                      这是栏目 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>#}
+{#                  </li>#}
+{#                  <li>#}
+{#                    <label>#}
+{#                      <input name="category" type="radio" value="5">#}
+{#                      这是栏目 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>#}
+{#                  </li>#}
                 </ul>
               </div>
             </div>
             <div class="add-article-box">
-              <h2 class="add-article-box-title"><span>标签</span></h2>
+              <h2 class="add-article-box-title"><span>更改文章分类</span></h2>
               <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="输入新标签" value="{{ data.id }}" name="tags" autocomplete="off">
+                <input type="text" class="form-control" placeholder="尝试新的分类"  name="tags" autocomplete="off">
                 <span class="prompt-text">多个标签请用英文逗号,隔开</span> </div>
             </div>
             <div class="add-article-box">
@@ -176,7 +191,7 @@
               <h2 class="add-article-box-title"><span>发布</span></h2>
               <div class="add-article-box-content">
               	<p><label>状态：</label><span class="article-status-display">已发布</span></p>
-                <p><label>公开度：</label><input type="radio" name="visibility" value="0" checked/>公开 <input type="radio" name="visibility" value="1" />加密</p>
+                <p><label>公开度：</label><input type="radio" name="visibility" value={{ data.get('data').id }} checked/>公开 <input type="radio" name="visibility" value={{ data.get('data').id }} />加密</p>
                 <p><label>发布于：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="2016-01-09 17:29:37" /></span></p>
               </div>
               <div class="add-article-box-footer">

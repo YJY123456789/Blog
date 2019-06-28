@@ -126,42 +126,46 @@
           <div class="col-md-3">
             <h1 class="page-header">操作</h1>
             <div class="add-article-box">
-              <h2 class="add-article-box-title"><span>栏目</span></h2>
+              <h2 class="add-article-box-title"><span>文章分类</span></h2>
               <div class="add-article-box-content">
                 <ul class="category-list">
+                    {% for sort in data.get('sorts') %}
                   <li>
                     <label>
-                      <input name="category" type="radio" value="1" checked>
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
+                      <input name="category" type="radio" value={{ sort.id }} checked>
+                      {{ sort.name }} <em class="hidden-md">( 栏目ID: <span>{{ sort.id }}</span> )</em></label>
                   </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="2">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="3">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="4">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="5">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>
-                  </li>
+                    {% endfor %}
+{#                  <li>#}
+
+{#                    <label>#}
+{#                      <input name="category" type="radio" value="2">#}
+{#                      这是栏目 <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>#}
+{#                  </li>#}
+{#                  <li>#}
+{#                    <label>#}
+{#                      <input name="category" type="radio" value="3">#}
+{#                      这是栏目 <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>#}
+{#                  </li>#}
+{#                  <li>#}
+{#                    <label>#}
+{#                      <input name="category" type="radio" value="4">#}
+{#                      这是栏目 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>#}
+{#                  </li>#}
+{#                  <li>#}
+{#                    <label>#}
+{#                      <input name="category" type="radio" value="5">#}
+{#                      这是栏目 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>#}
+{#                  </li>#}
                 </ul>
               </div>
             </div>
             <div class="add-article-box">
-              <h2 class="add-article-box-title"><span>文章分类（必选）</span></h2>
+              <h2 class="add-article-box-title"><span>文章分类（新分类）</span></h2>
               <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="日记/学无止境/慢生活/美文欣赏" name="tags" autocomplete="off">
+                <input type="text" class="form-control" placeholder="尝试增加新的分类吧..." name="tags" autocomplete="off">
                 <span class="prompt-text">多个标签请用英文逗号,隔开</span> </div>
+
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>标题图片</span></h2>

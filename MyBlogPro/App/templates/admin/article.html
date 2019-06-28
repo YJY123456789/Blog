@@ -70,7 +70,7 @@
         <li><a data-toggle="tooltip" data-placement="top" title="网站暂无留言功能">留言</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li><a href="{{ url_for('user.category') }}">栏目</a></li>
+        <li><a href="{{ url_for('user.category') }}">文章分类</a></li>
         <li><a class="dropdown-toggle" id="otherMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">其他</a>
           <ul class="dropdown-menu" aria-labelledby="otherMenu">
             <li><a href="flink.html">友情链接</a></li>
@@ -112,7 +112,7 @@
               <tr>
                 <th><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">选择</span></th>
                 <th><span class="glyphicon glyphicon-file"></span> <span class="visible-lg">标题</span></th>
-                <th><span class="glyphicon glyphicon-list"></span> <span class="visible-lg">栏目</span></th>
+                <th><span class="glyphicon glyphicon-list"></span> <span class="visible-lg">分类</span></th>
                 <th class="hidden-sm"><span class="glyphicon glyphicon-tag"></span> <span class="visible-lg">标签</span></th>
                 <th class="hidden-sm"><span class="glyphicon glyphicon-comment"></span> <span class="visible-lg">评论</span></th>
                 <th><span class="glyphicon glyphicon-time"></span> <span class="visible-lg">日期</span></th>
@@ -123,7 +123,7 @@
             {% for article in data.get('articles') %}
                 <tr>
                 <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
-                <td class="article-title">{{ article.content }}</td>
+                <td class="article-title">{{ article.content | striptags }}</td>
                 <td>{{ article.name }}</td>
                 <td class="hidden-sm">{{ article.s.name }}</td>
                 <td class="hidden-sm">0</td>

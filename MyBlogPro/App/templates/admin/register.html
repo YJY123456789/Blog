@@ -26,18 +26,17 @@
 <body class="user-select">
 <div class="container">
   <div class="siteIcon"><img src="/static/admin/images/icon/icon.png" alt="" data-toggle="tooltip" data-placement="top" title="欢迎使用异清轩博客管理系统" draggable="false" /></div>
-  <form action="{{ url_for('user.login') }}" method="post" autocomplete="off" class="form-signin">
-    <h2 class="form-signin-heading" style="text-align: center">管理员登录</h2>
+  <form action="{{ url_for('user.register') }}" method="post" autocomplete="off" class="form-signin">
+    <h2 class="form-signin-heading" style="text-align: center">管理员注册</h2>
     <label for="userName" class="sr-only">用户名</label>
     <input type="text" id="userName" name="username" class="form-control" placeholder="请输入用户名" required autofocus autocomplete="off" maxlength="10">
     <label for="userPwd" class="sr-only">密码</label>
     <input type="password" id="userPwd" name="userpwd" class="form-control" placeholder="请输入密码" required autocomplete="off" maxlength="18">
-    <a href=""><button class="btn btn-lg btn-primary btn-block" type="submit" id="signinSubmit">登录</button></a>
+    <label for="userPwd" class="sr-only">确认密码</label>
+    <input type="password" id="userPwd" name="checkuserpwd" class="form-control" placeholder="请再次输入密码" required autocomplete="off" maxlength="18">
+    <a href=""><button class="btn btn-lg btn-primary btn-block" type="submit" id="signinSubmit">注册</button></a>
   </form>
-  <div class="footer">
-      <p style="float: left"><a href="{{ url_for('user.register') }}" data-toggle="tooltip" data-placement="left" title="不知道自己在哪?"> ←注册用户 </a></p>
-    <p style="float: right"><a href="{{ url_for('user.index') }}" data-toggle="tooltip" data-placement="left" title="不知道自己在哪?">回到首页 →</a></p>
-  </div>
+
 </div>
 <script src="/static/admin/js/bootstrap.min.js"></script>
 <script>

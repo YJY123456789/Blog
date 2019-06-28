@@ -9,11 +9,23 @@ blue = Blueprint('user', __name__)
 # 首页
 @blue.route('/')
 def index():
-    return render_template('home/index.html')
+    sorts=Sort.query.filter(Sort.num>0)
+    article = Article.query.all()
+    data={
+        'sorts':sorts,
+        'article':article,
+        "n":0
+    }
+    return render_template('home/index.html',data=data)
 @blue.route('/myindex/<string:name>/')
 def myindex(name):
     data = Sort.query.filter_by(name=name).first()
-    return render_template('home/index.html',data=data)
+    sorts =Sort.query.all()
+    mydata = {
+        'data':data,
+        "sorts":sorts
+    }
+    return render_template('home/index.html',data=mydata)
 @blue.route('/about/')
 def about():
     res=request.url_root
@@ -76,17 +88,26 @@ def flink():
     return render_template('admin/flink.html')
 @blue.route('/index/')
 def adminindex():
-    name=session.get('name','请登录')
+    if session.get("name"):
+        return render_template('admin/index.html',name=session.get("name"))
+    else:
+        return redirect(url_for('user.login'))
 
-    return render_template('admin/index.html',name=name)
 @blue.route('/login/',methods=["GET","POST"])
 def login():
     if request.method =="POST":
         name = request.form.get('username')
         pwd = request.form.get('userpwd')
-        if name == User.query.get(1).name and pwd == User.query.get(1).password:
-            session['name'] = name
-            return redirect(url_for('user.adminindex'))
+        user=User.query.all()
+        for x in user:
+            if x.name !=name or x.password != pwd:
+                continue
+            else:
+                session['name'] = name
+                break
+        else:
+            return "账户或者密码错误"
+        return redirect(url_for('user.adminindex'))
     return render_template('admin/login.html')
 @blue.route('/logout/')
 def logout():
@@ -112,10 +133,10 @@ def update_article():
     if request.method == "POST":
         title = request.form.get('title')
         content = request.form.get('content')
-        id = request.form.get('tags')
-        myarticle =Article.query.filter_by(id=id).first()
+        id = request.form.get('category')
+        myarticle = Article.query.filter_by(id=id).first()
         myarticle.name = title
-        myarticle.content = content.replace('<','').replace('>','').replace('p','').replace('/','')
+        myarticle.content = content
         try:
             db.session.add(myarticle)
             db.session.commit()
@@ -128,12 +149,23 @@ def update_article():
 @blue.route('/aarticle/<string:article>/')
 def aarticle(article):
     data = Article.query.filter_by(name=article).first()
+    data={
+        'data':data,
+        'sort':Sort.query.all()
+    }
     return render_template('admin/update-article.html',data=data)
 
 
 @blue.route("/movearticle/<int:id>/")
 def movearticle(id):
     mya = Article.query.filter_by(id=id).first()
+    s=Sort.query.filter_by(id=mya.my_sort).first()
+    c=s.num
+    s.num=c-1
+    if s.num ==0:
+        db.session.delete(s)
+    else:
+        db.session.add(s)
     try:
         db.session.delete(mya)
         db.session.commit()
@@ -162,7 +194,7 @@ def update_category():
     if request.method == "POST":
         myname =request.form.get("name")
         myothername=request.form.get('alias')
-        myid = request.form.get('describe')[0:1]
+        myid = request.form.get('fid')
         id=int(myid)
         mysort=Sort.query.filter_by(id=id).first()
         mysort.name=myname
@@ -183,19 +215,55 @@ def add_article():
         title = request.form.get('title')
         content = request.form.get('content')
         tags = request.form.get('tags')
+        cate = request.form.get('category')
         a = Article()
         a.name = title
-        a.content = content.replace('<','').replace('p','').replace('>','').replace('br','').replace('/','')
-        a.my_sort = Sort.query.filter_by(name=tags).first().id
-        try:
-            db.session.add(a)
-            db.session.commit()
-        except:
-            db.session.rollback()
-            db.session.flush()
-        return redirect(url_for('user.article'))
+        a.content = content
+        if tags:
+            s = Sort()
+            s.name = tags
+            s.num = Sort.query.filter_by(name=tags).count()+1
+
+            try:
+                db.session.add(s)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                db.session.flush()
+            a.my_sort = Sort.query.filter_by(name=tags).first().id
+            try:
+                db.session.add(a)
+                db.session.commit()
+
+            except:
+                db.session.rollback()
+                db.session.flush()
+            return redirect(url_for('user.article'))
+        else:
+            a.my_sort = cate
+            so = Sort.query.filter_by(id=cate).first()
+            c=so.num
+            so.num=c+1
+            try:
+                db.session.add(a)
+                db.session.commit()
+                try:
+                    db.session.add(so)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    db.session.flush()
+            except:
+                db.session.rollback()
+                db.session.flush()
+            return redirect(url_for('user.article'))
     name=session.get('name')
-    return render_template('admin/add-article.html',name=name)
+    sorts = Sort.query.all()
+    data={
+        'name':name,
+        'sorts':sorts
+    }
+    return render_template('admin/add-article.html',data=data)
 @blue.route('/addcategory/',methods=['GET','POST'])
 def add_category():
     if request.method == "POST":
@@ -222,7 +290,7 @@ def add_category():
         else:
             s.name = name
             s.othername=othername
-            s.num=str(random.randint(1,162))
+            s.num=0
             try:
                 db.session.add(s)
                 db.session.commit()
@@ -235,6 +303,32 @@ def add_category():
 #
 #
 #
-#
-
+@blue.route('/register/',methods=['GET','POST'])
+def register():
+    if request.method == "POST":
+        pwd = request.form.get('userpwd')
+        checkpwd = request.form.get('checkuserpwd')
+        username = request.form.get('username')
+        user=User.query.all()
+        for x in user:
+            if username == x.name:
+                break
+                return "账户已存在"
+            else:
+                continue
+        else:
+            if pwd == checkpwd:
+                myuser = User()
+                myuser.name =username
+                myuser.password = pwd
+                try:
+                    db.session.add(myuser)
+                    db.session.commit()
+                except:
+                    db.session.roolback()
+                    db.session.flush()
+                return render_template('admin/login.html')
+            else:
+                return '密码错误'
+    return render_template('admin/register.html')
 
