@@ -7,33 +7,33 @@
       <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
       <DefaultCasing>lower/lower</DefaultCasing>
     </root>
-    <schema id="2" parent="1" name="blog">
+    <schema id="2" parent="1" name="abc">
+      <Collation>utf8_general_ci</Collation>
+    </schema>
+    <schema id="3" parent="1" name="bcd">
+      <Collation>utf8_general_ci</Collation>
+    </schema>
+    <schema id="4" parent="1" name="blog">
       <Current>1</Current>
       <Visible>1</Visible>
       <Collation>utf8_general_ci</Collation>
     </schema>
-    <schema id="3" parent="1" name="day04homework">
-      <Collation>latin1_swedish_ci</Collation>
-    </schema>
-    <schema id="4" parent="1" name="flaskdb">
+    <schema id="5" parent="1" name="djangodb">
       <Collation>utf8_general_ci</Collation>
     </schema>
-    <schema id="5" parent="1" name="flaskdb2">
+    <schema id="6" parent="1" name="information_schema">
       <Collation>utf8_general_ci</Collation>
     </schema>
-    <schema id="6" parent="1" name="flaskproext">
-      <Collation>latin1_swedish_ci</Collation>
-    </schema>
-    <schema id="7" parent="1" name="information_schema">
+    <schema id="7" parent="1" name="mysql">
       <Collation>utf8_general_ci</Collation>
     </schema>
-    <schema id="8" parent="1" name="mysql">
-      <Collation>latin1_swedish_ci</Collation>
-    </schema>
-    <schema id="9" parent="1" name="performance_schema">
+    <schema id="8" parent="1" name="performance_schema">
       <Collation>utf8_general_ci</Collation>
     </schema>
-    <schema id="10" parent="1" name="sys">
+    <schema id="9" parent="1" name="sys">
+      <Collation>utf8_general_ci</Collation>
+    </schema>
+    <schema id="10" parent="1" name="yjy">
       <Collation>utf8_general_ci</Collation>
     </schema>
     <collation id="11" parent="1" name="armscii8_bin">
@@ -924,10 +924,10 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="233" parent="2" name="alembic_version"/>
-    <table id="234" parent="2" name="article"/>
-    <table id="235" parent="2" name="sort"/>
-    <table id="236" parent="2" name="user"/>
+    <table id="233" parent="4" name="alembic_version"/>
+    <table id="234" parent="4" name="article"/>
+    <table id="235" parent="4" name="sort"/>
+    <table id="236" parent="4" name="user"/>
     <column id="237" parent="233" name="version_num">
       <Position>1</Position>
       <DataType>varchar(32)|0s</DataType>

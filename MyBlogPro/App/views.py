@@ -10,20 +10,40 @@ blue = Blueprint('user', __name__)
 @blue.route('/')
 def index():
     sorts=Sort.query.filter(Sort.num>0)
-    article = Article.query.all()
+    article = Article.query.limit(6)
+    page=(Article.query.count())//6+2
     data={
         'sorts':sorts,
         'article':article,
-        "n":0
+        'page':page
     }
     return render_template('home/index.html',data=data)
+
+@blue.route('/page/<int:num>/')
+def page(num):
+    num=num
+    sorts=Sort.query.filter(Sort.num>0)
+    article = Article.query.offset((num-1)*6).limit(6)
+    page=(Article.query.count())//6+2
+    print(page)
+    data={
+        'sorts':sorts,
+        'article':article,
+        'page':page
+    }
+    return render_template('home/index.html',data=data)
+
+
+
 @blue.route('/myindex/<string:name>/')
 def myindex(name):
     data = Sort.query.filter_by(name=name).first()
     sorts =Sort.query.all()
+    page=Sort.query.filter_by(name=name).first().num//6+2
     mydata = {
         'data':data,
-        "sorts":sorts
+        "sorts":sorts,
+        'page':page,
     }
     return render_template('home/index.html',data=mydata)
 @blue.route('/about/')
@@ -219,6 +239,7 @@ def add_article():
         a = Article()
         a.name = title
         a.content = content
+        a.pic=random.randint(1,12)
         if tags:
             s = Sort()
             s.name = tags

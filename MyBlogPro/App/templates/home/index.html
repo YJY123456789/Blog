@@ -174,8 +174,14 @@
 {#      <h3><a href="/">擦肩而过</a></h3>#}
 {#      <p>《擦肩而过》文/清河鱼 编绘/天朝羽打开一扇窗，我不曾把你想得平常。看季节一一过往。你停留的那个地方，是否依然花儿开放？在夜里守靠着梦中的，想那仿佛前世铭刻进心肠的</p>#}
 {#    </li>#}
-  </main>
+
     {% endif %}
+<div class="pagelist">
+    {% for x in range(1,data.get('page')) %}
+        <a href="{{ url_for('user.page',num=x) }}" class="curPage">{{ x }}</a>&nbsp;&nbsp;
+    {% endfor %}
+</div>
+  </main>
 </article>
 <footer>
   <p>Design by <a href="http://www.yangqq.com" target="_blank">杨青个人博客</a> <a href="/">蜀ICP备11002373号-1</a></p>
